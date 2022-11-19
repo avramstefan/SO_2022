@@ -29,3 +29,15 @@ The length for mapping is given by the page size (*pagesz*) and the flags that a
 <br />**MAP_FIXED** forces the mapping to start from the map_start_addr. If the mapping can not take place at the specified address, then it is not going to happen at all and the *mmap()* will fail.<br />
 **MAP_SHARED** is used for modifications of the contents of the mapping to be visible to other processes that share the same mapping.<br />
 **MAP_ANONYMOUS** will not cause virtual address space framentation and the mapping won't be backed by a file. The *fd* flag is ignored by using **MAP_ANONYMOUS**.
+<br /><br />
+If the mapping process succedeed, then the **segment->data + page_idx** will be modified, as the page was mapped.
+
+> If the segment file size is bigger than page offset, then the program will proceed with continuing the instructions from the address where the page fault occured. This is possible by using *lseek()* (low-level POSIX file descriptor I/O) and *read()* functions.
+The commands look as the following:<br />
+```
+    lseek(fd, segment->offset + page_offset, SEEK_SET);
+    read(fd, map_addr, min(segment->file_size - page_offset, pagesz);
+```
+> If the page offset is bigger than the segment file size, then the program risks to interfere with the **segment->mem_size - segment->file_size** block of memory, where informations about segments like *.bss* may be modified / accessed.
+
+> In the end, the mapped region will recieve the permissions from the **segment->perm** field, using *mprotect()* function.
