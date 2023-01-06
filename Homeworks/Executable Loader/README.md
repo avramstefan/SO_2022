@@ -28,7 +28,9 @@ If the page was not mapped, then there will be no errors and the mapping process
 The length for mapping is given by the page size (*pagesz*) and the flags that are used are the following: **MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS**.
 
 **MAP_FIXED** forces the mapping to start from the map_start_addr. If the mapping can not take place at the specified address, then it is not going to happen at all and the *mmap()* will fail.
+
 **MAP_SHARED** is used for modifications of the contents of the mapping to be visible to other processes that share the same mapping.
+
 **MAP_ANONYMOUS** will not cause virtual address space framentation and the mapping won't be backed by a file. The *fd* flag is ignored by using **MAP_ANONYMOUS**.
 
 If the mapping process succedeed, then the **segment->data + page_idx** will be modified, as the page was mapped.
