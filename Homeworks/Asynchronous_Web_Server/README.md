@@ -17,7 +17,7 @@ I/O (AIO)** and the notion of **sockets** ([**Sockets section**](#5-sockets)).
 
 The server is started by running the *aws* executable (```./aws```). It then creates an epoll ([**Epoll section**](#6-epoll)), used for monitoring multiple
 file descriptors. A listener socket is also created, representing, in fact, the server socket, as seen in **Fig. 1**. After the listener is added in the latter created epoll, an infinite loop is emerged, representing the running server. Further, an *epoll_event* is created and made to wait for an indefinite time, until an event occurs. When a client request has been made, our server will treat it based on three fundamental cases, which I will talk about next.
-<img src=server_socket.png allign = "center"  width="300" height="240">
+<center><img src=server_socket.png allign = "right"  width="300" height="240"></center>
 <center><b>Fig 1. - TLPI 56-2: A Pending socket connection</b></center>
 
 ## **2. Handle a new connection**
@@ -155,7 +155,7 @@ io_submit(conn->aio_ctx, NUM_OPS, &conn->iocb_r[i])
 async_IO_wait(conn);
 ```
 ```io_submit()``` function triggers the start of the asynchronous operations that are defined in the array of **iocb** structures given as an argument (it may be *iocb_r* or *iocb_w*). For example, if used after the ```io_prep_write()``` function, it will start the process of sending data from the *data_blocks* buffer to the socket (Fig 2.).
-<img src=Linux_AIO.jpg allign = "center"  width="350" height="300">
+<center><img src=Linux_AIO.jpg allign = "right"  width="350" height="300"></center>
 <center><b>Fig 2. - Linux AIO process</b></center>
 
 The ```async_IO_wait()``` wrapper function encapsulates the consacrated ```io_getevents()``` function and uses it in a loop, so that the program will wait for the submission of the operations (using *io_submit()*) and will obtain information about its result. As the function needs a ```aio_context_t``` variable as the first parameter, one will be initialised in ```iocb_setup()``` and will be stored in our **conn** variable.
