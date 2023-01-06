@@ -155,7 +155,7 @@ io_submit(conn->aio_ctx, NUM_OPS, &conn->iocb_r[i])
 async_IO_wait(conn);
 ```
 ```io_submit()``` function triggers the start of the asynchronous operations that are defined in the array of **iocb** structures given as an argument (it may be *iocb_r* or *iocb_w*). For example, if used after the ```io_prep_write()``` function, it will start the process of sending data from the *data_blocks* buffer to the socket (Fig 2.).
-<center><img src=Linux_AIO.jpg allign = "right"  width="350" height="300"></center>
+<center><img src=Linux_AIO.jpg allign = "right"  width="400" height="330"></center>
 <center><b>Fig 2. - Linux AIO process</b></center>
 
 The ```async_IO_wait()``` wrapper function encapsulates the consacrated ```io_getevents()``` function and uses it in a loop, so that the program will wait for the submission of the operations (using *io_submit()*) and will obtain information about its result. As the function needs a ```aio_context_t``` variable as the first parameter, one will be initialised in ```iocb_setup()``` and will be stored in our **conn** variable.
